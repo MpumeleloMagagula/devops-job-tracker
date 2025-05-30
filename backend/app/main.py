@@ -1,12 +1,15 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from . import models, schemas, crud
+from . import models, schemas, crud, routes
 from .database import engine, Base, get_db
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
 # FastAPI instance
 app = FastAPI()
+
+# Include job routes
+app.include_router(routes.router)
 
 # Auto-create tables at startup
 @app.on_event("startup")
