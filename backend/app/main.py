@@ -2,6 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from . import models, schemas, crud
 from .database import engine, Base, get_db
+from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # FastAPI instance
 app = FastAPI()
@@ -11,6 +13,14 @@ app = FastAPI()
 async def startup():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+# Register Prometheus instrumentator
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
+
+@app.get("/")
+def root():
+    return {"message": "DevOps Job Tracker API is live!"}
 
 # Create job endpoint
 @app.post("/jobs/", response_model=schemas.Job)
