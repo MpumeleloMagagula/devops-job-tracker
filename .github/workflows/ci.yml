@@ -1,15 +1,13 @@
-# .github/workflows/ci.yml
-
-name: FastAPI CI
+name: DevOps Job Tracker CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -18,29 +16,29 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: jobtracker
+          POSTGRES_DB: test_db
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
+          pip install poetry
+          poetry install
 
       - name: Run tests
         run: |
-          pytest backend/tests
+          poetry run pytest
