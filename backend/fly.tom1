@@ -1,0 +1,27 @@
+app = "name: DevOps Job Tracker"
+
+[build]
+  image = "python:3.11-slim"
+
+[env]
+  PORT = "8080"
+
+[experimental]
+  allowed_public_ports = [8080]
+  auto_rollback = true
+
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 80
+
+  [[services.ports]]
+    port = 443
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
+    grace_period = "10s"
+    restart_limit = 0
