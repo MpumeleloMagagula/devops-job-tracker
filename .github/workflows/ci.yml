@@ -1,4 +1,4 @@
-name: DevOps Job Tracker CI
+name: CI Pipeline
 
 on:
   push:
@@ -7,38 +7,60 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
     services:
       postgres:
-        image: postgres:15
+        image: postgres:14
         env:
+          POSTGRES_DB: devops_db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
+      # Checkout your code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      # Node.js for frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Run frontend build
+        working-directory: frontend
+        run: npm run build
+
+      # Python + Poetry for backend
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Poetry
         run: |
-          pip install poetry
+          curl -sSL https://install.python-poetry.org  | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Configure Poetry and install dependencies
+        working-directory: backend
+        run: |
+          poetry config virtualenvs.create false
           poetry install
 
-      - name: Run tests
+      - name: Run backend tests with pytest
+        working-directory: backend
         run: |
-          poetry run pytest
+          pytest

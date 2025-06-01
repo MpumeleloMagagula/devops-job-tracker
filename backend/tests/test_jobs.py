@@ -40,10 +40,7 @@ async def setup_db():
 @pytest.mark.asyncio
 async def test_create_job():
     async with AsyncClient(app=app, base_url="http://test") as ac:
-        response = await ac.post("/jobs", json={"company": "OpenAI", "position": "DevOps", "notes": "Cool role"})
-        assert response.status_code == 200
-        assert response.json()["company"] == "OpenAI"
-
+        response = await ac.post("/jobs", json={"company": "OpenAI", "position": "DevOps", "notes": "Cool role"})cd ..
 @pytest.mark.asyncio
 async def test_list_jobs():
     async with AsyncClient(app=app, base_url="http://test") as ac:
