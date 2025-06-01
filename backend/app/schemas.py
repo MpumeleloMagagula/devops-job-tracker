@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import date
+from datetime import datetime, date
+from app.models import Job
 
 # Shared properties for create and read
 class JobBase(BaseModel):
@@ -26,4 +27,5 @@ class Job(JobBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True  # Allows reading SQLAlchemy objects directly
+        from_attributes  = True  # Allows reading SQLAlchemy objects 
+        

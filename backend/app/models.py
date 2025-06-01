@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from sqlalchemy.orm import declarative_base
 
 
+
 Base = declarative_base()
 
 class Job(Base):

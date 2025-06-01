@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from . import models, schemas
+from sqlalchemy.ext.asyncio import AsyncSession 
+from app import models, schemas
 
 # Create a job record
 async def create_job(db: AsyncSession, job: schemas.JobCreate):

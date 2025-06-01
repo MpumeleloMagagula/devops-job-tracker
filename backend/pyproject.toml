@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "devops-job-tracker-backend"
+version = "0.1.0"
+description = "Backend API for DevOps Job Tracker built with FastAPI"
+authors = ["Mpumelelo Magagula <successeugene3@gmail.com>"]
+readme = "README.md"
+packages = [{include = "main"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+sqlalchemy = "^2.0.30"
+asyncpg = "^0.29.0"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+httpx = "^0.27.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
