@@ -1,6 +1,11 @@
 # Use slim Python image for smaller size
 FROM python:3.11-slim
 
+# Install PostgreSQL client libraries needed by asyncpg
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libpq-dev gcc && \
+    rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
@@ -11,8 +16,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-#COPY ./app ./app
-# Copy all backend files into container
 COPY . .
 
 # Expose port 8080 to the outside world

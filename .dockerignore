@@ -1,0 +1,36 @@
+# Ignore version control
+.git
+.github/workflows
+
+# Ignore Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Ignore virtual environments
+venv
+.env
+.envs
+
+# Ignore IDE files
+.idea
+.vscode
+*.swp
+
+# Ignore documentation builds
+docs/_build
+
+# Ignore test directories
+tests
+__pytest_cache__
+
+# Ignore frontend build artifacts if not needed
+frontend/node_modules
+frontend/dist
+
+# Ignore temporary files
+.DS_Store
+Thumbs.db
